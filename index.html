@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="kooi">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Angular JS tutorial</title>
+
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script src="js/main.js"></script>
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<div class="column-container" ng-controller="ParentController">
+		<section class="column" ng-repeat="sub in subreddits" ng-controller="RedditController">
+			<header class="column-header">
+				>>{{sub}}
+				<!-- <input ng-model="subreddit" name ="Name" placeholder="Enter subreddit"></input> -->
+			</header>
+			<div class="column-content">
+				<div class="column-scroller">
+					<ul ng-show='!reddit.error' ng-repeat="post in reddit">
+						<li>
+							<a ng-href='{{post.data.url}}'>{{post.data.title}}</a>
+						</li>
+					</ul>
+					<div ng-show='reddit.busy'>Loading data...</div>
+					<div ng-show='reddit.error'>Error fetching data</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</body>
+</html>
