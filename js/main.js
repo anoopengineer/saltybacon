@@ -19,6 +19,16 @@ app.service('RedditFetcher', function($http, $q) {
 
 app.controller('ParentController', function($scope) {
 	$scope.subreddits = ["http://api.reddit.com/hot.json", "http://api.reddit.com/r/pics.json", "http://api.reddit.com/r/programming.json", "http://api.reddit.com/r/stocks.json"];
+	$scope.GetType = function(data) {
+		var url = data.url.toLowerCase();
+		if (url.indexOf(".gif") > -1 || url.indexOf(".png") > -1 || url.indexOf(".jpg") > -1 || url.indexOf(".jpeg") > -1) {
+			return "image";
+		} else if (data.thumbnail === "self") {
+			return "self";
+		} else {
+			return "default";
+		}
+	};
 });
 
 app.controller('RedditController', function($scope, $http, $timeout, $exceptionHandler, RedditFetcher) {
