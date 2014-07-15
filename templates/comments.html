@@ -1,0 +1,5 @@
+<div>{{comment.data.body}}</div>
+
+<ul>
+	<li ng-if="comment.data.replies.data.children" ng-repeat="comment in comment.data.replies.data.children" ng-include="'templates/comments.html'"
+</ul>

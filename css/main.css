@@ -192,6 +192,7 @@ body {
 	font-size: 14px;
 	line-height: 16px;
 	color: #262626;
+	font-weight: bold;
 }
 
 .card .card-heading .card-heading-header span {
@@ -247,3 +248,8 @@ body {
 .card-action-right{
 	float:right;
 }
+
+
+
+
+

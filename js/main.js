@@ -18,17 +18,47 @@ app.service('RedditFetcher', function($http, $q) {
 });
 
 app.controller('ParentController', function($scope) {
-	$scope.subreddits = ["http://api.reddit.com/hot.json", "http://api.reddit.com/r/pics.json", "http://api.reddit.com/r/programming.json", "http://api.reddit.com/r/stocks.json"];
+	$scope.subreddits = ["http://api.reddit.com/.json",
+		"http://api.reddit.com/r/pics.json",
+		"http://api.reddit.com/r/funny.json",
+		"http://api.reddit.com/r/programming.json",
+		// "http://api.reddit.com/r/stockmarket.json"
+	];
 	$scope.GetType = function(data) {
+		if (typeof data === "undefined") {
+			return "default";
+		}
 		var url = data.url.toLowerCase();
 		if (url.indexOf(".gif") > -1 || url.indexOf(".png") > -1 || url.indexOf(".jpg") > -1 || url.indexOf(".jpeg") > -1) {
 			return "image";
-		} else if (data.thumbnail === "self") {
+		} else if (data.selftext) {
 			return "self";
 		} else {
 			return "default";
 		}
 	};
+	$scope.GetSmallerImageUrl = function(url) {
+		// url = url.toLowerCase();
+		if (url.indexOf("imgur.com") <= 0) {
+			return url;
+		}
+
+		// Dont do this for gif. You will stop the animation
+		// if (url.indexOf(".gif") > -1) {
+		// 	url = url.replace(".gif", "m.gif");
+		// } else
+
+		if (url.indexOf(".png") > -1) {
+			url = url.replace(".png", "m.png");
+		} else if (url.indexOf(".jpg") > -1) {
+			url = url.replace(".jpg", "m.jpg");
+		} else if (url.indexOf(".jpeg") > -1) {
+			url = url.replace(".jpeg", "m.jpeg");
+		}
+		return url;
+
+	};
+
 });
 
 app.controller('RedditController', function($scope, $http, $timeout, $exceptionHandler, RedditFetcher) {
@@ -69,4 +99,23 @@ app.controller('RedditController', function($scope, $http, $timeout, $exceptionH
 			}, 750);
 		}
 	});
+
+
+});
+
+
+app.controller('PostController', function($scope, $http, $timeout, $exceptionHandler, RedditFetcher) {
+	$scope.commentClicked = function(link) {
+		console.log($scope.post);
+		var commentLink = "http://www.reddit.com" + link + ".json";
+		var popupWindow = window.open('comments.html' + '?q=' + link);
+		popupWindow.mySharedData = commentLink;
+		popupWindow.title = $scope.post.data.title;
+		popupWindow.url = $scope.post.data.url;
+		popupWindow.author = $scope.post.data.author;
+		popupWindow.subreddit = $scope.post.data.subreddit;
+		popupWindow.ups = $scope.post.data.ups;
+		popupWindow.num_comments = $scope.post.data.num_comments;
+		console.log("number of comments = ", popupWindow.num_comments);
+	};
 });
